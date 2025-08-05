@@ -11,7 +11,10 @@ import {
   MoreHorizontal,
   Plus,
   LogOut,
-  Images
+  Images,
+  Menu,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import botsrherelogo from "@/assets/botsrhere-logo.png";
 
@@ -39,12 +42,22 @@ export default function Sidebar({ className }: SidebarProps) {
   ];
 
   return (
-    <div className={`bg-sidebar border-r border-sidebar-border flex flex-col h-screen overflow-hidden ${className}`}>
-      {/* Header */}
+    <div className={`bg-sidebar border-r border-sidebar-border flex flex-col h-screen overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} ${className}`}>
+      {/* Header with Toggle */}
       <div className="p-4 border-b border-sidebar-border flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <img src={botsrherelogo} alt="BotsRHere" className="w-8 h-8" />
-          {!isCollapsed && <span className="text-lg font-semibold text-sidebar-foreground">BotsRHere</span>}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src={botsrherelogo} alt="BotsRHere" className="w-8 h-8" />
+            {!isCollapsed && <span className="text-lg font-semibold text-sidebar-foreground">BotsRHere</span>}
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="text-sidebar-foreground hover:bg-sidebar-accent h-8 w-8"
+          >
+            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </Button>
         </div>
       </div>
 
@@ -59,12 +72,13 @@ export default function Sidebar({ className }: SidebarProps) {
               <Link key={item.path} to={item.path}>
                 <Button
                   variant={isActive ? "default" : "ghost"}
-                  className={`w-full justify-start gap-3 text-left ${
+                  className={`w-full ${isCollapsed ? 'justify-center px-0' : 'justify-start'} gap-3 text-left ${
                     isActive 
                       ? "bg-sidebar-primary text-sidebar-primary-foreground" 
                       : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                   }`}
                   size="sm"
+                  title={isCollapsed ? item.label : undefined}
                 >
                   <Icon className="w-4 h-4" />
                   {!isCollapsed && <span>{item.label}</span>}
@@ -81,12 +95,18 @@ export default function Sidebar({ className }: SidebarProps) {
           onClick={handleSignOut}
           variant="outline"
           size="sm"
-          className="w-full justify-start gap-3"
+          className={`w-full ${isCollapsed ? 'justify-center px-0' : 'justify-start'} gap-3`}
+          title={isCollapsed ? "Sign Out" : undefined}
         >
           <LogOut className="w-4 h-4" />
           {!isCollapsed && <span>Sign Out</span>}
         </Button>
-        <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
+        <Button 
+          variant="ghost" 
+          className={`w-full ${isCollapsed ? 'justify-center px-0' : 'justify-start'} gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground`} 
+          size="sm"
+          title={isCollapsed ? "Apps" : undefined}
+        >
           <MoreHorizontal className="w-4 h-4" />
           {!isCollapsed && <span>Apps</span>}
         </Button>

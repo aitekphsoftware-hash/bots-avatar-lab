@@ -106,6 +106,7 @@ export const useAnonymousAuth = () => {
 
       setAnonymousSession(anonymousSessionData);
       setIsAuthenticated(true);
+      setLoading(false);
 
       toast({
         title: "Welcome!",
