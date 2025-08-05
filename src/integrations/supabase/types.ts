@@ -190,6 +190,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_anonymous_tokens: {
+        Args: {
+          user_id_param: string
+          tokens_param: number
+          activity_param: string
+        }
+        Returns: boolean
+      }
       consume_tokens: {
         Args: {
           user_uuid: string
@@ -211,12 +219,68 @@ export type Database = {
         }
         Returns: string
       }
+      get_anonymous_session: {
+        Args: { session_id_param: string; user_id_param: string }
+        Returns: {
+          id: string
+          session_id: string
+          total_tokens: number
+          used_tokens: number
+          remaining_tokens: number
+          created_at: string
+        }[]
+      }
+      get_anonymous_session_by_id: {
+        Args: { user_id_param: string }
+        Returns: {
+          id: string
+          session_id: string
+          total_tokens: number
+          used_tokens: number
+          remaining_tokens: number
+          created_at: string
+        }[]
+      }
+      get_did_avatars: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          did_avatar_id: string
+          name: string
+          gender: string
+          style: string
+          image_url: string
+          thumbnail_url: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }[]
+      }
+      get_did_voices: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          voice_id: string
+          name: string
+          gender: string
+          language: string
+          provider: string
+          preview_url: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }[]
+      }
       get_user_remaining_tokens: {
         Args: { user_uuid: string }
         Returns: number
       }
       is_admin: {
         Args: { user_uuid: string }
+        Returns: boolean
+      }
+      sync_did_data: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
     }
