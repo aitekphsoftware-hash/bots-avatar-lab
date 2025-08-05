@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Upload, Video } from "lucide-react";
 import { didApi, Avatar } from "@/lib/d-id-api";
 import AvatarCard from "@/components/AvatarCard";
+import ImageUploadDialog from "@/components/ImageUploadDialog";
+import TokenUsageWidget from "@/components/TokenUsageWidget";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Avatars() {
@@ -102,6 +104,11 @@ export default function Avatars() {
 
       {/* Content */}
       <div className="p-6">
+        {/* Token Usage Widget */}
+        <div className="mb-6">
+          <TokenUsageWidget className="max-w-sm" />
+        </div>
+
         {/* Create Avatar Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card className="relative">
@@ -115,7 +122,9 @@ export default function Avatars() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="orange">Upload photo</Button>
+              <ImageUploadDialog>
+                <Button variant="orange">Upload photo</Button>
+              </ImageUploadDialog>
             </CardContent>
             <div className="absolute top-4 right-4 w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
               <Upload className="w-8 h-8 text-muted-foreground" />
@@ -164,10 +173,10 @@ export default function Avatars() {
               </div>
             )}
 
-            {/* D-ID Avatars section */}
+            {/* Studio Avatars section */}
             <div>
               <h3 className="text-lg font-semibold mb-4">
-                {selectedTab === "all" ? "D-ID Avatars" : `${selectedTab === "premium" ? "Premium" : "Standard"} Avatars`}
+                {selectedTab === "all" ? "Studio Avatars" : `${selectedTab === "premium" ? "Premium" : "Standard"} Avatars`}
               </h3>
               
               {loading ? (

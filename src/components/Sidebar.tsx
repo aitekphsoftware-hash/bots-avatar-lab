@@ -63,38 +63,6 @@ export default function Sidebar({ className }: SidebarProps) {
         })}
       </nav>
 
-      {/* Products Section */}
-      <div className="p-4 border-t border-sidebar-border">
-        <div className="text-xs font-medium text-sidebar-foreground/60 mb-2 uppercase tracking-wider">
-          Products
-        </div>
-        <div className="space-y-1">
-          <Link to="/video-studio">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
-              <Video className="w-4 h-4" />
-              {!isCollapsed && <span>Video Studio</span>}
-            </Button>
-          </Link>
-          <Link to="/video-translate">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
-              <Languages className="w-4 h-4" />
-              {!isCollapsed && <span>Video Translate</span>}
-            </Button>
-          </Link>
-          <Link to="/agents">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
-              <MessageCircle className="w-4 h-4" />
-              {!isCollapsed && <span>Agents</span>}
-            </Button>
-          </Link>
-          <Link to="/avatars">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
-              <Users className="w-4 h-4" />
-              {!isCollapsed && <span>Avatars</span>}
-            </Button>
-          </Link>
-        </div>
-      </div>
 
       {/* Bottom Section */}
       <div className="p-4 border-t border-sidebar-border">

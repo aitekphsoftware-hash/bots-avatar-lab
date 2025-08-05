@@ -93,18 +93,34 @@ class DIDApi {
     try {
       const response = await this.makeRequest('/clips/presenters');
       // Transform the response to match our Avatar interface
-      return response.presenters?.map((presenter: any) => ({
-        id: presenter.presenter_id,
-        name: presenter.presenter_id,
-        image_url: presenter.thumbnail_url || presenter.image_url,
-        gender: presenter.gender || 'unknown',
-        age_group: 'adult',
-        style: presenter.type === 'premium' ? 'premium' : 'standard'
-      })) || [];
+      return response.presenters?.map((presenter: any) => {
+        // Extract clean name from presenter_id
+        const cleanName = this.extractAvatarName(presenter.presenter_id);
+        return {
+          id: presenter.presenter_id,
+          name: cleanName,
+          image_url: presenter.thumbnail_url || presenter.image_url,
+          gender: presenter.gender || 'unknown',
+          age_group: 'adult',
+          style: presenter.type === 'premium' ? 'premium' : 'standard'
+        };
+      }) || [];
     } catch (error) {
       console.error('Error fetching avatars:', error);
       return [];
     }
+  }
+
+  private extractAvatarName(presenterId: string): string {
+    // Extract name from presenter ID patterns like "v2_public_Adam@36wCtvjdAi"
+    const parts = presenterId.split('_');
+    if (parts.length >= 3) {
+      const namePart = parts[2].split('@')[0];
+      // Handle names with descriptors like "Adam_BlackShirt_Library"
+      const nameComponents = namePart.split('_');
+      return nameComponents[0]; // Return just the first name
+    }
+    return presenterId;
   }
 
   // Create a new video with talking avatar

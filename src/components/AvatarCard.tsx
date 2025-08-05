@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/lib/d-id-api";
+import VideoGenerationDialog from "./VideoGenerationDialog";
 
 interface AvatarCardProps {
   avatar: Avatar;
@@ -39,9 +40,11 @@ export default function AvatarCard({ avatar, onSelect, isSelected, showCreateBut
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
           {showCreateButton && (
-            <Button variant="default" size="sm">
-              Select Avatar
-            </Button>
+            <VideoGenerationDialog selectedAvatar={avatar}>
+              <Button variant="default" size="sm" onClick={(e) => e.stopPropagation()}>
+                Create Video
+              </Button>
+            </VideoGenerationDialog>
           )}
         </div>
       </div>
