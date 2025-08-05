@@ -77,7 +77,7 @@ export default function Agents() {
               />
             </div>
           </div>
-          <Button variant="orange" className="gap-2">
+          <Button variant="blue" className="gap-2">
             <Plus className="w-4 h-4" />
             Create Agent
           </Button>
@@ -94,7 +94,7 @@ export default function Agents() {
             <p className="text-muted-foreground mb-4 text-center max-w-md">
               Build conversational AI agents with custom avatars, knowledge bases, and personalities to handle customer interactions.
             </p>
-            <Button variant="orange" size="lg" className="gap-2">
+            <Button variant="blue" size="lg" className="gap-2">
               <Plus className="w-4 h-4" />
               Create Agent
             </Button>

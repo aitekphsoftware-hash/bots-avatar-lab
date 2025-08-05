@@ -99,7 +99,7 @@ export default function Avatars() {
               <option value="female">Female</option>
             </select>
           </div>
-          <Button variant="orange" className="gap-2">
+          <Button variant="blue" className="gap-2">
             <Plus className="w-4 h-4" />
             Create Avatar
           </Button>
@@ -127,7 +127,7 @@ export default function Avatars() {
             </CardHeader>
             <CardContent>
               <ImageUploadDialog>
-                <Button variant="orange">Upload photo</Button>
+                <Button variant="blue">Upload photo</Button>
               </ImageUploadDialog>
             </CardContent>
             <div className="absolute top-4 right-4 w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
@@ -146,7 +146,7 @@ export default function Avatars() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="orange">Create Avatar</Button>
+              <Button variant="blue">Create Avatar</Button>
             </CardContent>
             <div className="absolute top-4 right-4 w-16 h-16 bg-muted rounded-lg overflow-hidden">
               <img src="/placeholder.svg" alt="Video avatar" className="w-full h-full object-cover" />

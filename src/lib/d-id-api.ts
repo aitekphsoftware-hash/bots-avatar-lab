@@ -182,6 +182,31 @@ class DIDApi {
 
     return response.json();
   }
+
+  // Create a new agent/presenter
+  async createAgent(agentData: {
+    name: string;
+    source_url: string;
+    driver_id?: string;
+    gender?: 'male' | 'female';
+    age?: 'young_adult' | 'adult' | 'senior';
+  }) {
+    return this.makeRequest('/clips/presenters', {
+      method: 'POST',
+      body: JSON.stringify({
+        source_url: agentData.source_url,
+        driver_id: agentData.driver_id || 'Vcq0R4a8F0',
+        config: {
+          result_format: 'mp4'
+        }
+      }),
+    });
+  }
+
+  // Get voices/voices endpoint
+  async getVoices() {
+    return this.makeRequest('/voices');
+  }
 }
 
 export const didApi = new DIDApi();

@@ -9,7 +9,7 @@ export default function VideoTranslate() {
       <div className="border-b bg-white px-6 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Video Translate</h1>
-          <Button variant="orange" className="gap-2">
+          <Button variant="blue" className="gap-2">
             <Upload className="w-4 h-4" />
             Upload Video
           </Button>
@@ -68,7 +68,7 @@ export default function VideoTranslate() {
               <p className="text-muted-foreground mb-4 text-center max-w-md">
                 Drag and drop your video file here, or click to browse. Supports MP4, MOV, AVI formats up to 100MB.
               </p>
-              <Button variant="orange" size="lg" className="gap-2">
+              <Button variant="blue" size="lg" className="gap-2">
                 <Upload className="w-4 h-4" />
                 Choose File
               </Button>

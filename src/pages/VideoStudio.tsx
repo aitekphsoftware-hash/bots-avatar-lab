@@ -150,7 +150,7 @@ export default function VideoStudio() {
           <TabsContent value="all" className="mt-6">
             {/* Create Video Button */}
             <div className="mb-8">
-              <Button variant="orange" size="lg" className="gap-2">
+              <Button variant="blue" size="lg" className="gap-2">
                 <Plus className="w-5 h-5" />
                 Create video
               </Button>

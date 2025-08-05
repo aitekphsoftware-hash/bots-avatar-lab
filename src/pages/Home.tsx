@@ -111,7 +111,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <Link to="/avatars">
-                  <Button variant="orange" className="gap-2">
+                  <Button variant="blue" className="gap-2">
                     Create Avatar
                     <ArrowRight className="w-4 h-4" />
                   </Button>
