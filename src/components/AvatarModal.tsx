@@ -57,6 +57,7 @@ const AvatarModal = ({ presenter, children }: AvatarModalProps) => {
   const fetchVoices = async () => {
     setLoadingVoices(true);
     try {
+      console.log("Fetching voices from D-ID API...");
       const response = await fetch("https://api.d-id.com/clips/voices", {
         headers: {
           "accept": "application/json",
@@ -64,9 +65,16 @@ const AvatarModal = ({ presenter, children }: AvatarModalProps) => {
         }
       });
       
+      console.log("Voices API response status:", response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log("Voices API response data:", data);
         setVoices(data.voices || []);
+        console.log("Voices set:", data.voices?.length || 0, "voices");
+      } else {
+        const errorData = await response.text();
+        console.error("Voices API error:", response.status, errorData);
       }
     } catch (error) {
       console.error("Failed to fetch voices:", error);
@@ -205,45 +213,58 @@ const AvatarModal = ({ presenter, children }: AvatarModalProps) => {
                         </div>
                       ) : (
                         <div className="space-y-3">
-                          {voices.map((voice) => (
-                            <Card key={voice.voice_id} className="transition-all hover:shadow-md">
-                              <CardContent className="p-4">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h4 className="font-medium">{voice.name}</h4>
-                                    <div className="flex items-center gap-2 mt-1">
-                                      <Badge variant="outline" className="text-xs">
-                                        {voice.gender}
-                                      </Badge>
-                                      <Badge variant="outline" className="text-xs">
-                                        {voice.language}
-                                      </Badge>
+                          {voices.length > 0 ? (
+                            voices.map((voice) => (
+                              <Card key={voice.voice_id} className="transition-all hover:shadow-md">
+                                <CardContent className="p-4">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex-1">
+                                      <h4 className="font-medium">{voice.name}</h4>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <Badge variant="outline" className="text-xs">
+                                          {voice.gender}
+                                        </Badge>
+                                        <Badge variant="outline" className="text-xs">
+                                          {voice.language}
+                                        </Badge>
+                                      </div>
                                     </div>
+                                    {voice.preview_url && (
+                                      <Button
+                                        size="sm"
+                                        variant={playingVoice === voice.voice_id ? "default" : "outline"}
+                                        onClick={() => playVoiceSample(voice.voice_id, voice.preview_url)}
+                                        className="ml-3"
+                                      >
+                                        {playingVoice === voice.voice_id ? (
+                                          <>
+                                            <Pause className="w-4 h-4 mr-1" />
+                                            Playing
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Play className="w-4 h-4 mr-1" />
+                                            Play
+                                          </>
+                                        )}
+                                      </Button>
+                                    )}
                                   </div>
-                                  {voice.preview_url && (
-                                    <Button
-                                      size="sm"
-                                      variant={playingVoice === voice.voice_id ? "default" : "outline"}
-                                      onClick={() => playVoiceSample(voice.voice_id, voice.preview_url)}
-                                      className="ml-3"
-                                    >
-                                      {playingVoice === voice.voice_id ? (
-                                        <>
-                                          <Pause className="w-4 h-4 mr-1" />
-                                          Playing
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Play className="w-4 h-4 mr-1" />
-                                          Play
-                                        </>
-                                      )}
-                                    </Button>
-                                  )}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
+                                </CardContent>
+                              </Card>
+                            ))
+                          ) : (
+                            <div className="flex flex-col items-center justify-center py-8 text-center">
+                              <Volume2 className="w-12 h-12 text-muted-foreground mb-4" />
+                              <h4 className="text-lg font-medium mb-2">No Voices Available</h4>
+                              <p className="text-sm text-muted-foreground mb-4">
+                                Voices could not be loaded from the D-ID API. This might be due to API limitations or authentication issues.
+                              </p>
+                              <Button variant="outline" onClick={fetchVoices}>
+                                Try Again
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
