@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          title: string
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       preview_urls: {
         Row: {
           created_at: string | null
@@ -71,12 +104,80 @@ export type Database = {
         }
         Relationships: []
       }
+      token_usage_history: {
+        Row: {
+          activity_description: string | null
+          activity_type: string
+          cost_eur: number | null
+          created_at: string
+          id: string
+          tokens_used: number
+          user_id: string
+        }
+        Insert: {
+          activity_description?: string | null
+          activity_type: string
+          cost_eur?: number | null
+          created_at?: string
+          id?: string
+          tokens_used: number
+          user_id: string
+        }
+        Update: {
+          activity_description?: string | null
+          activity_type?: string
+          cost_eur?: number | null
+          created_at?: string
+          id?: string
+          tokens_used?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          remaining_tokens: number | null
+          total_tokens: number
+          updated_at: string
+          used_tokens: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          remaining_tokens?: number | null
+          total_tokens?: number
+          updated_at?: string
+          used_tokens?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          remaining_tokens?: number | null
+          total_tokens?: number
+          updated_at?: string
+          used_tokens?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      consume_tokens: {
+        Args: {
+          user_uuid: string
+          tokens_to_consume: number
+          activity_type: string
+          activity_description?: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
