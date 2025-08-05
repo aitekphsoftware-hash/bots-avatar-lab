@@ -53,8 +53,8 @@ export default function Avatars() {
         throw error;
       }
       
-      console.log("Avatars loaded:", data.presenters?.length || 0);
-      setPresenters(data.presenters || []);
+      console.log("Avatars loaded:", data?.presenters?.length || data?.length || 0);
+      setPresenters(data?.presenters || data || []);
     } catch (error) {
       console.error("Error loading presenters:", error);
       toast({
