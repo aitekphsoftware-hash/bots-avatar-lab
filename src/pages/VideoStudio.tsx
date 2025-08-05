@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, ChevronDown, Play } from "lucide-react";
-import { didApi, Avatar } from "@/lib/d-id-api";
+import VideoGenerationDialog from "@/components/VideoGenerationDialog";
 
 interface VideoTemplate {
   id: string;
@@ -149,12 +149,12 @@ export default function VideoStudio() {
 
           <TabsContent value="all" className="mt-6">
             {/* Create Video Button */}
-            <div className="mb-8">
+            <VideoGenerationDialog>
               <Button variant="blue" size="lg" className="gap-2">
                 <Plus className="w-5 h-5" />
                 Create video
               </Button>
-            </div>
+            </VideoGenerationDialog>
 
             {/* Existing Videos */}
             {videos.length > 0 && (

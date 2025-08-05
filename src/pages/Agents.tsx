@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, MessageCircle, Settings, Users, Bot } from "lucide-react";
+import AgentCreationDialog from "@/components/AgentCreationDialog";
 
 interface Agent {
   id: string;
@@ -77,10 +78,12 @@ export default function Agents() {
               />
             </div>
           </div>
-          <Button variant="blue" className="gap-2">
-            <Plus className="w-4 h-4" />
-            Create Agent
-          </Button>
+          <AgentCreationDialog>
+            <Button variant="blue" className="gap-2">
+              <Plus className="w-4 h-4" />
+              Create Agent
+            </Button>
+          </AgentCreationDialog>
         </div>
       </div>
 
@@ -94,10 +97,12 @@ export default function Agents() {
             <p className="text-muted-foreground mb-4 text-center max-w-md">
               Build conversational AI agents with custom avatars, knowledge bases, and personalities to handle customer interactions.
             </p>
-            <Button variant="blue" size="lg" className="gap-2">
-              <Plus className="w-4 h-4" />
-              Create Agent
-            </Button>
+            <AgentCreationDialog>
+              <Button variant="blue" size="lg" className="gap-2">
+                <Plus className="w-4 h-4" />
+                Create Agent
+              </Button>
+            </AgentCreationDialog>
           </CardContent>
         </Card>
 
