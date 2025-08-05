@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from '@supabase/supabase-js';
+import { useAnonymousAuth } from "@/hooks/useAnonymousAuth";
 import Sidebar from "@/components/Sidebar";
 import Avatars from "./Avatars";
 import VideoStudio from "./VideoStudio";
@@ -19,6 +20,7 @@ const Index = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { isAuthenticated: isAnonymousAuth, loading: anonymousLoading } = useAnonymousAuth();
 
   useEffect(() => {
     // Set up auth state listener
@@ -41,7 +43,7 @@ const Index = () => {
   }, []);
 
   // Show loading while checking auth
-  if (loading) {
+  if (loading || anonymousLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
@@ -60,7 +62,7 @@ const Index = () => {
       <Route
         path="/*"
         element={
-          user ? (
+          user || isAnonymousAuth ? (
             <div className="min-h-screen flex bg-background">
               <Sidebar className="w-64 flex-shrink-0" />
               <Routes>

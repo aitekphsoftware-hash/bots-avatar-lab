@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Session } from '@supabase/supabase-js';
+import { useAnonymousAuth } from "@/hooks/useAnonymousAuth";
 import botsrherelogo from "@/assets/botsrhere-logo.png";
 
 const Auth = () => {
@@ -26,6 +27,7 @@ const Auth = () => {
   });
   
   const navigate = useNavigate();
+  const { startGuestSession, loading: anonymousLoading } = useAnonymousAuth();
 
   useEffect(() => {
     // Set up auth state listener
@@ -129,6 +131,20 @@ const Auth = () => {
     }
   };
 
+  const handleGuestLogin = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      await startGuestSession();
+      navigate("/");
+    } catch (error: any) {
+      setError(error.message || "Failed to create guest session");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (user) {
     return null; // Will redirect via useEffect
   }
@@ -187,8 +203,29 @@ const Auth = () => {
                   </Alert>
                 )}
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full" disabled={loading || anonymousLoading}>
                   {loading ? "Signing in..." : "Sign In"}
+                </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      Or continue as guest
+                    </span>
+                  </div>
+                </div>
+
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full" 
+                  onClick={handleGuestLogin}
+                  disabled={loading || anonymousLoading}
+                >
+                  {anonymousLoading ? "Creating guest session..." : "Continue as Guest"}
                 </Button>
               </form>
             </TabsContent>
@@ -279,8 +316,29 @@ const Auth = () => {
                   </Alert>
                 )}
 
-                <Button type="submit" className="w-full" disabled={loading || !agreedToTerms}>
+                <Button type="submit" className="w-full" disabled={loading || !agreedToTerms || anonymousLoading}>
                   {loading ? "Creating account..." : "Create Account"}
+                </Button>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      Or continue as guest
+                    </span>
+                  </div>
+                </div>
+
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full" 
+                  onClick={handleGuestLogin}
+                  disabled={loading || anonymousLoading}
+                >
+                  {anonymousLoading ? "Creating guest session..." : "Continue as Guest"}
                 </Button>
               </form>
             </TabsContent>
