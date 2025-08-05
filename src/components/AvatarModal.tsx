@@ -57,25 +57,17 @@ const AvatarModal = ({ presenter, children }: AvatarModalProps) => {
   const fetchVoices = async () => {
     setLoadingVoices(true);
     try {
-      console.log("Fetching voices from D-ID API...");
-      const response = await fetch("https://api.d-id.com/clips/voices", {
-        headers: {
-          "accept": "application/json",
-          "authorization": "Basic Y29kZXh4eGhvc3RAZ21haWwuY29t:259e8IoCoDHpSrJ_Qwe9n"
-        }
-      });
+      console.log("Fetching voices from secure edge function...");
+      const { data, error } = await supabase.functions.invoke('d-id-voices');
       
-      console.log("Voices API response status:", response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Voices API response data:", data);
-        setVoices(data.voices || []);
-        console.log("Voices set:", data.voices?.length || 0, "voices");
-      } else {
-        const errorData = await response.text();
-        console.error("Voices API error:", response.status, errorData);
+      if (error) {
+        console.error("Edge function error:", error);
+        throw error;
       }
+      
+      console.log("Voices API response data:", data);
+      setVoices(data.voices || []);
+      console.log("Voices set:", data.voices?.length || 0, "voices");
     } catch (error) {
       console.error("Failed to fetch voices:", error);
     } finally {

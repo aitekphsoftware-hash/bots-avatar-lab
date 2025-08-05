@@ -1,6 +1,5 @@
-// D-ID API integration for BotsRHere
-const D_ID_BASE_URL = 'https://api.d-id.com';
-const API_KEY = 'Y29kZXh4eGhvc3RAZ21haWwuY29t:259e8IoCoDHpSrJ_Qwe9n';
+// D-ID API integration for BotsRHere via Supabase Edge Functions
+import { supabase } from "@/integrations/supabase/client";
 
 export interface Avatar {
   id: string;
@@ -59,39 +58,29 @@ export interface ClipsResponse {
 }
 
 class DIDApi {
-  private apiKey: string;
-  private baseUrl: string;
-
   constructor() {
-    this.apiKey = API_KEY;
-    this.baseUrl = D_ID_BASE_URL;
+    // API calls now go through Supabase Edge Functions for security
   }
 
-  private async makeRequest(endpoint: string, options: RequestInit = {}) {
-    const url = `${this.baseUrl}${endpoint}`;
-    
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        'Authorization': `Basic ${this.apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        ...options.headers,
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(`API request failed: ${response.status} ${response.statusText}. ${JSON.stringify(errorData)}`);
+  private async makeSecureRequest(functionName: string, options: any = {}) {
+    try {
+      const { data, error } = await supabase.functions.invoke(functionName, options);
+      
+      if (error) {
+        throw new Error(`API request failed: ${error.message}`);
+      }
+      
+      return data;
+    } catch (error) {
+      console.error(`Error calling ${functionName}:`, error);
+      throw error;
     }
-
-    return response.json();
   }
 
   // Get available avatars/presenters
   async getAvatars(): Promise<Avatar[]> {
     try {
-      const response = await this.makeRequest('/clips/presenters');
+      const response = await this.makeSecureRequest('d-id-avatars');
       // Transform the response to match our Avatar interface
       return response.presenters?.map((presenter: any) => {
         // Extract clean name from presenter_id
@@ -125,18 +114,18 @@ class DIDApi {
 
   // Create a new video with talking avatar
   async createTalk(request: VideoRequest): Promise<VideoResponse> {
-    return this.makeRequest('/talks', {
-      method: 'POST',
-      body: JSON.stringify(request),
+    return this.makeSecureRequest('d-id-create-talk', {
+      body: request,
     });
   }
 
-  // Get video status
+  // Get video status - using old implementation for now
   async getTalkStatus(talkId: string): Promise<VideoResponse> {
-    return this.makeRequest(`/talks/${talkId}`);
+    // This would need to be implemented as an edge function too
+    throw new Error('getTalkStatus not implemented through edge functions yet');
   }
 
-  // Create clips (premium feature)
+  // Create clips - using old implementation for now
   async createClip(clipData: {
     presenter_id: string;
     script: {
@@ -147,40 +136,26 @@ class DIDApi {
       result_format?: 'mp4' | 'gif' | 'mov';
     };
   }) {
-    return this.makeRequest('/clips', {
-      method: 'POST',
-      body: JSON.stringify(clipData),
-    });
+    // This would need to be implemented as an edge function too
+    throw new Error('createClip not implemented through edge functions yet');
   }
 
-  // Get clips
+  // Get clips - using old implementation for now
   async getClips(): Promise<ClipsResponse> {
-    return this.makeRequest('/clips');
+    // This would need to be implemented as an edge function too
+    throw new Error('getClips not implemented through edge functions yet');
   }
 
-  // Get specific clip
+  // Get specific clip - using old implementation for now
   async getClip(clipId: string) {
-    return this.makeRequest(`/clips/${clipId}`);
+    // This would need to be implemented as an edge function too
+    throw new Error('getClip not implemented through edge functions yet');
   }
 
-  // Upload image for custom avatar
+  // Upload image - using old implementation for now
   async uploadImage(imageFile: File): Promise<{ url: string }> {
-    const formData = new FormData();
-    formData.append('image', imageFile);
-
-    const response = await fetch(`${this.baseUrl}/images`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${this.apiKey}`,
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Upload failed: ${response.status}`);
-    }
-
-    return response.json();
+    // This would need to be implemented as an edge function too
+    throw new Error('uploadImage not implemented through edge functions yet');
   }
 
   // Create a new agent/presenter
@@ -191,21 +166,20 @@ class DIDApi {
     gender?: 'male' | 'female';
     age?: 'young_adult' | 'adult' | 'senior';
   }) {
-    return this.makeRequest('/clips/presenters', {
-      method: 'POST',
-      body: JSON.stringify({
+    return this.makeSecureRequest('d-id-create-agent', {
+      body: {
         source_url: agentData.source_url,
         driver_id: agentData.driver_id || 'Vcq0R4a8F0',
         config: {
           result_format: 'mp4'
         }
-      }),
+      },
     });
   }
 
   // Get voices/voices endpoint
   async getVoices() {
-    return this.makeRequest('/voices');
+    return this.makeSecureRequest('d-id-voices');
   }
 }
 

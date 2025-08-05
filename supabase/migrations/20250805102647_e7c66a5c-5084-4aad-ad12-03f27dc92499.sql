@@ -1,0 +1,1 @@
+-- No database changes needed for this migration, just adding API proxy functionality

@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Upload, Video, Play } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import AvatarModal from "@/components/AvatarModal";
 import ImageUploadDialog from "@/components/ImageUploadDialog";
 import TokenUsageWidget from "@/components/TokenUsageWidget";
@@ -43,19 +44,17 @@ export default function Avatars() {
   const loadPresenters = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://api.d-id.com/clips/presenters", {
-        headers: {
-          "accept": "application/json",
-          "authorization": "Basic Y29kZXh4eGhvc3RAZ21haWwuY29t:259e8IoCoDHpSrJ_Qwe9n"
-        }
-      });
+      console.log("Loading presenters from secure edge function...");
       
-      if (response.ok) {
-        const data = await response.json();
-        setPresenters(data.presenters || []);
-      } else {
-        throw new Error("Failed to fetch presenters");
+      const { data, error } = await supabase.functions.invoke('d-id-avatars');
+      
+      if (error) {
+        console.error("Edge function error:", error);
+        throw error;
       }
+      
+      console.log("Avatars loaded:", data.presenters?.length || 0);
+      setPresenters(data.presenters || []);
     } catch (error) {
       console.error("Error loading presenters:", error);
       toast({

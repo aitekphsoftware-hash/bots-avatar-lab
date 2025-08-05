@@ -45,3 +45,15 @@ buckets = [
 
 [functions.unsplash-search]
 verify_jwt = false
+
+[functions.d-id-avatars]
+verify_jwt = false
+
+[functions.d-id-voices]
+verify_jwt = false
+
+[functions.d-id-create-talk]
+verify_jwt = false
+
+[functions.d-id-create-agent]
+verify_jwt = false
