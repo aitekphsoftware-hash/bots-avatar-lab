@@ -38,7 +38,7 @@ export const UnsplashImageSearch = ({ onImageSelect, orientation }: UnsplashImag
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [selectedOrientation, setSelectedOrientation] = useState<string>(orientation || "");
+  const [selectedOrientation, setSelectedOrientation] = useState<string>(orientation || "all");
 
   const searchImages = async (searchQuery: string, pageNum = 1, reset = true) => {
     if (!searchQuery.trim()) return;
@@ -50,7 +50,7 @@ export const UnsplashImageSearch = ({ onImageSelect, orientation }: UnsplashImag
           query: searchQuery,
           page: pageNum,
           per_page: 20,
-          ...(selectedOrientation && { orientation: selectedOrientation })
+          ...(selectedOrientation && selectedOrientation !== "all" && { orientation: selectedOrientation })
         }
       });
 
@@ -110,7 +110,7 @@ export const UnsplashImageSearch = ({ onImageSelect, orientation }: UnsplashImag
             <SelectValue placeholder="Orientation" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All</SelectItem>
+            <SelectItem value="all">All</SelectItem>
             <SelectItem value="landscape">Landscape</SelectItem>
             <SelectItem value="portrait">Portrait</SelectItem>
             <SelectItem value="squarish">Square</SelectItem>
