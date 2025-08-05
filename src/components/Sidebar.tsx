@@ -10,7 +10,8 @@ import {
   Languages, 
   MoreHorizontal,
   Plus,
-  LogOut
+  LogOut,
+  Images
 } from "lucide-react";
 import botsrherelogo from "@/assets/botsrhere-logo.png";
 
@@ -34,6 +35,7 @@ export default function Sidebar({ className }: SidebarProps) {
     { icon: Video, label: "Video Studio", path: "/video-studio" },
     { icon: Languages, label: "Video Translate", path: "/video-translate" },
     { icon: MessageCircle, label: "Agents", path: "/agents" },
+    { icon: Images, label: "Media Library", path: "/media-library" },
   ];
 
   return (

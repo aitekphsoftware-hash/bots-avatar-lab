@@ -6,7 +6,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Play, Clock, Search, Filter } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface VideoTemplate {
@@ -74,89 +73,130 @@ export const VideoTemplateGallery = ({
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Create sample templates locally for now
-      const sampleTemplates: VideoTemplate[] = [
+      // Mock templates data for now (until Supabase types are updated)
+      const mockTemplates: VideoTemplate[] = [
         {
-          id: '1',
-          name: 'Business Introduction',
-          description: 'Professional introduction template for business purposes',
-          category: 'business',
-          script_template: 'Hello, I\'m {name} and I\'m excited to introduce our company {company}. We specialize in {specialty} and have been serving clients for {years} years. Our mission is to {mission}. Thank you for your time!',
-          background_type: 'solid',
-          style_preset: 'professional',
+          id: "1",
+          name: "Business Introduction",
+          description: "Professional introduction template for business purposes",
+          category: "business",
+          script_template: "Hello, I'm {name} and I'm excited to introduce our company {company}. We specialize in {specialty} and have been serving clients for {years} years. Our mission is to {mission}. Thank you for your time!",
+          background_type: "solid",
+          style_preset: "professional",
           duration_estimate: 30,
-          tags: ['business', 'introduction', 'corporate'],
+          tags: ["business", "introduction", "corporate"],
           is_premium: false
         },
         {
-          id: '2',
-          name: 'Product Demo',
-          description: 'Showcase your product features and benefits',
-          category: 'marketing',
-          script_template: 'Introducing {product_name} - the {description}. Key features include {feature1}, {feature2}, and {feature3}. With {product_name}, you can {benefit1} and {benefit2}. Try it today and see the difference!',
-          background_type: 'solid',
-          style_preset: 'professional',
+          id: "2",
+          name: "Product Demo",
+          description: "Showcase your product features and benefits",
+          category: "marketing",
+          script_template: "Introducing {product_name} - the {description}. Key features include {feature1}, {feature2}, and {feature3}. With {product_name}, you can {benefit1} and {benefit2}. Try it today and see the difference!",
+          background_type: "solid",
+          style_preset: "professional",
           duration_estimate: 45,
-          tags: ['product', 'demo', 'marketing', 'sales'],
+          tags: ["product", "demo", "marketing", "sales"],
           is_premium: false
         },
         {
-          id: '3',
-          name: 'Educational Explainer',
-          description: 'Explain complex topics in simple terms',
-          category: 'education',
-          script_template: 'Today we\'re going to learn about {topic}. {topic} is important because {importance}. Let me break this down into simple steps: First, {step1}. Second, {step2}. Finally, {step3}. Remember, {key_takeaway}.',
-          background_type: 'solid',
-          style_preset: 'casual',
+          id: "3",
+          name: "Educational Explainer",
+          description: "Explain complex topics in simple terms",
+          category: "education",
+          script_template: "Today we're going to learn about {topic}. {topic} is important because {importance}. Let me break this down into simple steps: First, {step1}. Second, {step2}. Finally, {step3}. Remember, {key_takeaway}.",
+          background_type: "solid",
+          style_preset: "casual",
           duration_estimate: 60,
-          tags: ['education', 'tutorial', 'explainer'],
+          tags: ["education", "tutorial", "explainer"],
           is_premium: false
         },
         {
-          id: '4',
-          name: 'Event Announcement',
-          description: 'Announce upcoming events and occasions',
-          category: 'announcement',
-          script_template: 'We\'re thrilled to announce {event_name} happening on {date} at {location}. Join us for {description}. Highlights include {highlight1}, {highlight2}, and {highlight3}. Register now at {website} or call {phone}!',
-          background_type: 'gradient',
-          style_preset: 'creative',
-          duration_estimate: 35,
-          tags: ['event', 'announcement', 'invitation'],
+          id: "4",
+          name: "Sales Pitch",
+          description: "Compelling sales presentation template",
+          category: "sales",
+          script_template: "Are you struggling with {problem}? You're not alone. {statistic} of people face this challenge. That's why we created {solution}. With {solution}, you can {benefit1}, {benefit2}, and save {savings}. Don't wait - {call_to_action}!",
+          background_type: "gradient",
+          style_preset: "professional",
+          duration_estimate: 40,
+          tags: ["sales", "pitch", "marketing", "conversion"],
           is_premium: true
+        },
+        {
+          id: "5",
+          name: "Welcome Message",
+          description: "Warm welcome for new customers or team members",
+          category: "welcome",
+          script_template: "Welcome to {organization}! We're so glad you're here. As a new {role}, you'll be working with {team} on {projects}. Your first step is to {first_step}. If you have any questions, feel free to reach out to {contact}. Welcome aboard!",
+          background_type: "solid",
+          style_preset: "casual",
+          duration_estimate: 35,
+          tags: ["welcome", "onboarding", "introduction"],
+          is_premium: false
+        },
+        {
+          id: "6",
+          name: "Thank You Message",
+          description: "Express gratitude to customers or partners",
+          category: "gratitude",
+          script_template: "Thank you so much for {reason}. Your {action} means the world to us. Because of supporters like you, we've been able to {achievement}. We're committed to {commitment} and look forward to {future_plans}. Thank you again!",
+          background_type: "solid",
+          style_preset: "casual",
+          duration_estimate: 25,
+          tags: ["thanks", "gratitude", "appreciation"],
+          is_premium: false
         }
       ];
 
-      setTemplates(sampleTemplates);
+      setTemplates(mockTemplates);
 
-      // Sample videos
+      // Mock videos data for now
       if (showVideos) {
-        const sampleVideos: PublicVideo[] = [
+        const mockVideos: PublicVideo[] = [
           {
-            id: '1',
-            title: 'Business Introduction Example',
-            description: 'See how a professional business introduction looks',
-            video_url: 'https://example.com/business-intro.mp4',
-            category: 'example',
-            tags: ['business', 'example', 'introduction'],
-            view_count: 150,
+            id: "1",
+            title: "Business Introduction Example",
+            description: "See how a professional business introduction looks",
+            video_url: "https://example.com/business-intro.mp4",
+            thumbnail_url: "https://example.com/business-intro-thumb.jpg",
+            category: "example",
+            duration: 35,
+            tags: ["business", "example", "introduction"],
+            view_count: 1250,
             is_featured: true
           },
           {
-            id: '2',
-            title: 'Product Demo Example',
-            description: 'Watch this product demonstration in action',
-            video_url: 'https://example.com/product-demo.mp4',
-            category: 'example',
-            tags: ['product', 'demo', 'example'],
-            view_count: 89,
+            id: "2", 
+            title: "Product Demo Example",
+            description: "Watch this product demonstration in action",
+            video_url: "https://example.com/product-demo.mp4",
+            thumbnail_url: "https://example.com/product-demo-thumb.jpg",
+            category: "example",
+            duration: 50,
+            tags: ["product", "demo", "example"],
+            view_count: 890,
+            is_featured: false
+          },
+          {
+            id: "3",
+            title: "Educational Content Example",
+            description: "Learn how to create engaging educational videos",
+            video_url: "https://example.com/education.mp4",
+            thumbnail_url: "https://example.com/education-thumb.jpg",
+            category: "example",
+            duration: 75,
+            tags: ["education", "tutorial", "example"],
+            view_count: 645,
             is_featured: false
           }
         ];
-        setVideos(sampleVideos);
+
+        setVideos(mockVideos);
       }
     } catch (error) {
-      console.error('Error loading templates:', error);
-      toast.error('Failed to load templates');
+      console.error('Error fetching data:', error);
+      toast.error('Failed to load templates and videos');
     } finally {
       setLoading(false);
     }
@@ -190,7 +230,7 @@ export const VideoTemplateGallery = ({
   };
 
   const handleVideoSelect = async (video: PublicVideo) => {
-    // Note: View count increment will be implemented when database is ready
+    // For now, just call the callback without updating database
     if (onVideoSelect) {
       onVideoSelect(video);
       toast.success(`Video "${video.title}" selected!`);

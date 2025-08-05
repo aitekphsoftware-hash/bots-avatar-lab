@@ -9,6 +9,7 @@ import VideoStudio from "./VideoStudio";
 import VideoTranslate from "./VideoTranslate";
 import Agents from "./Agents";
 import Home from "./Home";
+import { MediaLibrary } from "./MediaLibrary";
 import Auth from "./Auth";
 import Terms from "./Terms";
 import Privacy from "./Privacy";
@@ -68,6 +69,7 @@ const Index = () => {
                 <Route path="/video-studio" element={<VideoStudio />} />
                 <Route path="/video-translate" element={<VideoTranslate />} />
                 <Route path="/agents" element={<Agents />} />
+                <Route path="/media-library" element={<MediaLibrary />} />
               </Routes>
             </div>
           ) : (
