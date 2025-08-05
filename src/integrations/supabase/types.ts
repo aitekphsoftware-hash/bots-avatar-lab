@@ -199,6 +199,18 @@ export type Database = {
         }
         Returns: boolean
       }
+      create_anonymous_session: {
+        Args: {
+          fingerprint_hash_param: string
+          session_id_param: string
+          user_agent_param?: string
+          screen_resolution_param?: string
+          timezone_param?: string
+          language_param?: string
+          platform_param?: string
+        }
+        Returns: string
+      }
       get_user_remaining_tokens: {
         Args: { user_uuid: string }
         Returns: number
