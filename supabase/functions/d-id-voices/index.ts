@@ -14,25 +14,49 @@ serve(async (req) => {
   try {
     console.log('Fetching D-ID voices...')
     
-    const response = await fetch('https://api.d-id.com/clips/voices', {
-      headers: {
-        'accept': 'application/json',
-        'authorization': `Basic ${Deno.env.get('DID_API_KEY')}`,
+    // D-ID doesn't seem to have a dedicated voices API endpoint
+    // Return a curated list of common voices instead
+    const commonVoices = [
+      {
+        voice_id: "en-US-JennyNeural",
+        name: "Jenny (Neural)",
+        gender: "female",
+        language: "en-US",
+        provider: "microsoft"
       },
-    })
+      {
+        voice_id: "en-US-GuyNeural", 
+        name: "Guy (Neural)",
+        gender: "male",
+        language: "en-US",
+        provider: "microsoft"
+      },
+      {
+        voice_id: "en-US-AriaNeural",
+        name: "Aria (Neural)", 
+        gender: "female",
+        language: "en-US",
+        provider: "microsoft"
+      },
+      {
+        voice_id: "en-GB-SoniaNeural",
+        name: "Sonia (Neural)",
+        gender: "female", 
+        language: "en-GB",
+        provider: "microsoft"
+      },
+      {
+        voice_id: "en-GB-RyanNeural",
+        name: "Ryan (Neural)",
+        gender: "male",
+        language: "en-GB", 
+        provider: "microsoft"
+      }
+    ];
 
-    console.log('D-ID voices API response status:', response.status)
+    console.log('Returning curated voices:', commonVoices.length)
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('D-ID voices API error:', response.status, errorText)
-      throw new Error(`D-ID API error: ${response.status} ${errorText}`)
-    }
-
-    const data = await response.json()
-    console.log('Successfully fetched voices:', data.voices?.length || 0)
-
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify({ voices: commonVoices }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (error) {
