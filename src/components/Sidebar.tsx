@@ -39,9 +39,9 @@ export default function Sidebar({ className }: SidebarProps) {
   ];
 
   return (
-    <div className={`bg-sidebar border-r border-sidebar-border flex flex-col h-screen ${className}`}>
+    <div className={`bg-sidebar border-r border-sidebar-border flex flex-col h-screen overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="p-4 border-b border-sidebar-border">
+      <div className="p-4 border-b border-sidebar-border flex-shrink-0">
         <div className="flex items-center gap-3">
           <img src={botsrherelogo} alt="BotsRHere" className="w-8 h-8" />
           {!isCollapsed && <span className="text-lg font-semibold text-sidebar-foreground">BotsRHere</span>}
@@ -49,33 +49,34 @@ export default function Sidebar({ className }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
-        {navigationItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
-          return (
-            <Link key={item.path} to={item.path}>
-              <Button
-                variant={isActive ? "default" : "ghost"}
-                className={`w-full justify-start gap-3 text-left ${
-                  isActive 
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground" 
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                }`}
-                size="sm"
-              >
-                <Icon className="w-4 h-4" />
-                {!isCollapsed && <span>{item.label}</span>}
-              </Button>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 p-4 space-y-2 overflow-hidden">
+        <div className="space-y-2">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link key={item.path} to={item.path}>
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  className={`w-full justify-start gap-3 text-left ${
+                    isActive 
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground" 
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  }`}
+                  size="sm"
+                >
+                  <Icon className="w-4 h-4" />
+                  {!isCollapsed && <span>{item.label}</span>}
+                </Button>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
-
       {/* Bottom Section */}
-      <div className="p-4 border-t border-sidebar-border space-y-2">
+      <div className="p-4 border-t border-sidebar-border space-y-2 flex-shrink-0">
         <Button 
           onClick={handleSignOut}
           variant="outline"
