@@ -31,7 +31,7 @@ const Privacy = () => {
               <section>
                 <h2 className="text-2xl font-semibold mb-3">1. Introduction</h2>
                 <p>
-                  BotsRHere ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI avatar and video generation platform.
+                  BotsRHere ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered assistants platform for more efficient workplace solutions, including holographic avatars, educational avatars, training avatars, avatar chatbots, humanoid robots, and advanced remote conferencing technologies.
                 </p>
                 <p>
                   This policy is designed to comply with the EU General Data Protection Regulation (GDPR) and other applicable privacy laws.
@@ -75,13 +75,17 @@ const Privacy = () => {
                 <h2 className="text-2xl font-semibold mb-3">4. How We Use Your Information</h2>
                 <p>We use your information to:</p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>Provide, maintain, and improve our services</li>
+                  <li>Provide, maintain, and improve our AI-powered workplace solutions</li>
                   <li>Process your requests and transactions</li>
-                  <li>Generate AI avatars and videos</li>
+                  <li>Generate holographic avatars, educational avatars, and training avatars</li>
+                  <li>Provide avatar chatbot services and humanoid robot solutions</li>
+                  <li>Enable multilingual teaching and cross-lingual communication</li>
+                  <li>Facilitate advanced remote conferencing and virtual presentations</li>
                   <li>Communicate with you about our services</li>
                   <li>Ensure platform security and prevent fraud</li>
                   <li>Comply with legal obligations</li>
-                  <li>Improve our AI models (with your consent)</li>
+                  <li>Improve our AI models and automation capabilities (with your consent)</li>
+                  <li>Enhance customer experience through 24/7 support and personalized interactions</li>
                 </ul>
               </section>
 
@@ -214,8 +218,9 @@ const Privacy = () => {
                 <div className="bg-muted p-4 rounded-lg">
                   <p><strong>Email:</strong> privacy@botsrhere.com</p>
                   <p><strong>Data Protection Officer:</strong> dpo@botsrhere.com</p>
-                  <p><strong>Address:</strong> [Your Company Address, EU]</p>
-                  <p><strong>Phone:</strong> [Your Contact Number]</p>
+                  <p><strong>Website:</strong> https://bots-r-here.com</p>
+                  <p><strong>Contact:</strong> Use our contact form at https://bots-r-here.com/222-2/</p>
+                  <p><strong>Demo Requests:</strong> https://bots-r-here.com/book-a-demo/</p>
                 </div>
               </section>
             </div>

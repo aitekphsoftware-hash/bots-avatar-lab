@@ -41,14 +41,22 @@ const Terms = () => {
               <section>
                 <h2 className="text-2xl font-semibold mb-3">2. Description of Service</h2>
                 <p>
-                  BotsRHere provides an AI-powered platform that enables users to:
+                  BotsRHere provides AI-powered assistants for a more efficient workplace, empowering human connection with AI-driven automation. Our suite of cutting-edge products includes:
                 </p>
                 <ul className="list-disc pl-6 space-y-1">
-                  <li>Create and customize AI avatars</li>
-                  <li>Generate videos using AI technology</li>
-                  <li>Translate video content</li>
-                  <li>Access AI agent functionalities</li>
+                  <li>Custom AI Solutions tailored to your unique needs</li>
+                  <li>Holographic avatars that bring ideas to life with interactive experiences</li>
+                  <li>Educational avatars that transform learning into exciting adventures</li>
+                  <li>Training avatars with multilingual teaching capabilities</li>
+                  <li>Avatar chatbots that seamlessly access CRM and database information</li>
+                  <li>Humanoid robots for daily task automation</li>
+                  <li>Dynamic interactive avatars and virtual presenters</li>
+                  <li>Advanced remote conferencing solutions</li>
+                  <li>Video generation and translation services</li>
                 </ul>
+                <p>
+                  Our solutions are designed to increase work efficiency, reduce costs, increase consumer engagement, and provide multimodal, cross-lingual, customizable, personalized, no-code experiences.
+                </p>
               </section>
 
               <section>
@@ -152,7 +160,9 @@ const Terms = () => {
                 <div className="bg-muted p-4 rounded-lg">
                   <p><strong>Email:</strong> legal@botsrhere.com</p>
                   <p><strong>EU Data Protection Officer:</strong> dpo@botsrhere.com</p>
-                  <p><strong>Address:</strong> [Your Company Address, EU]</p>
+                  <p><strong>Website:</strong> https://bots-r-here.com</p>
+                  <p><strong>Contact:</strong> Use our contact form at https://bots-r-here.com/222-2/</p>
+                  <p><strong>Demo Requests:</strong> https://bots-r-here.com/book-a-demo/</p>
                 </div>
               </section>
             </div>
