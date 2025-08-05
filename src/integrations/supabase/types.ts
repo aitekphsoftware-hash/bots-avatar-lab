@@ -104,6 +104,71 @@ export type Database = {
         }
         Relationships: []
       }
+      public_videos: {
+        Row: {
+          avatar_used: string | null
+          category: string
+          created_at: string
+          description: string | null
+          duration: number | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          script_used: string | null
+          tags: string[] | null
+          template_id: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string
+          view_count: number | null
+        }
+        Insert: {
+          avatar_used?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          script_used?: string | null
+          tags?: string[] | null
+          template_id?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url: string
+          view_count?: number | null
+        }
+        Update: {
+          avatar_used?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          script_used?: string | null
+          tags?: string[] | null
+          template_id?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_videos_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "video_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       token_usage_history: {
         Row: {
           activity_description: string | null
@@ -182,6 +247,60 @@ export type Database = {
           updated_at?: string
           used_tokens?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      video_templates: {
+        Row: {
+          background_type: string | null
+          background_value: string | null
+          category: string
+          created_at: string
+          description: string | null
+          duration_estimate: number | null
+          id: string
+          is_active: boolean | null
+          is_premium: boolean | null
+          name: string
+          script_template: string
+          style_preset: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          background_type?: string | null
+          background_value?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration_estimate?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_premium?: boolean | null
+          name: string
+          script_template: string
+          style_preset?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          background_type?: string | null
+          background_value?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          duration_estimate?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_premium?: boolean | null
+          name?: string
+          script_template?: string
+          style_preset?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

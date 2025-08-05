@@ -104,7 +104,7 @@ const Auth = () => {
         setError(error.message);
       }
     } else {
-      setSuccess("Account created successfully! You can now sign in.");
+      setSuccess("Account created successfully! You can now sign in. No email confirmation required.");
     }
   };
 

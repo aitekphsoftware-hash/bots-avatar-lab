@@ -74,30 +74,89 @@ export const VideoTemplateGallery = ({
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch templates
-      const { data: templatesData, error: templatesError } = await supabase
-        .from('video_templates')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
+      // Create sample templates locally for now
+      const sampleTemplates: VideoTemplate[] = [
+        {
+          id: '1',
+          name: 'Business Introduction',
+          description: 'Professional introduction template for business purposes',
+          category: 'business',
+          script_template: 'Hello, I\'m {name} and I\'m excited to introduce our company {company}. We specialize in {specialty} and have been serving clients for {years} years. Our mission is to {mission}. Thank you for your time!',
+          background_type: 'solid',
+          style_preset: 'professional',
+          duration_estimate: 30,
+          tags: ['business', 'introduction', 'corporate'],
+          is_premium: false
+        },
+        {
+          id: '2',
+          name: 'Product Demo',
+          description: 'Showcase your product features and benefits',
+          category: 'marketing',
+          script_template: 'Introducing {product_name} - the {description}. Key features include {feature1}, {feature2}, and {feature3}. With {product_name}, you can {benefit1} and {benefit2}. Try it today and see the difference!',
+          background_type: 'solid',
+          style_preset: 'professional',
+          duration_estimate: 45,
+          tags: ['product', 'demo', 'marketing', 'sales'],
+          is_premium: false
+        },
+        {
+          id: '3',
+          name: 'Educational Explainer',
+          description: 'Explain complex topics in simple terms',
+          category: 'education',
+          script_template: 'Today we\'re going to learn about {topic}. {topic} is important because {importance}. Let me break this down into simple steps: First, {step1}. Second, {step2}. Finally, {step3}. Remember, {key_takeaway}.',
+          background_type: 'solid',
+          style_preset: 'casual',
+          duration_estimate: 60,
+          tags: ['education', 'tutorial', 'explainer'],
+          is_premium: false
+        },
+        {
+          id: '4',
+          name: 'Event Announcement',
+          description: 'Announce upcoming events and occasions',
+          category: 'announcement',
+          script_template: 'We\'re thrilled to announce {event_name} happening on {date} at {location}. Join us for {description}. Highlights include {highlight1}, {highlight2}, and {highlight3}. Register now at {website} or call {phone}!',
+          background_type: 'gradient',
+          style_preset: 'creative',
+          duration_estimate: 35,
+          tags: ['event', 'announcement', 'invitation'],
+          is_premium: true
+        }
+      ];
 
-      if (templatesError) throw templatesError;
-      setTemplates(templatesData || []);
+      setTemplates(sampleTemplates);
 
-      // Fetch public videos if enabled
+      // Sample videos
       if (showVideos) {
-        const { data: videosData, error: videosError } = await supabase
-          .from('public_videos')
-          .select('*')
-          .eq('is_active', true)
-          .order('view_count', { ascending: false });
-
-        if (videosError) throw videosError;
-        setVideos(videosData || []);
+        const sampleVideos: PublicVideo[] = [
+          {
+            id: '1',
+            title: 'Business Introduction Example',
+            description: 'See how a professional business introduction looks',
+            video_url: 'https://example.com/business-intro.mp4',
+            category: 'example',
+            tags: ['business', 'example', 'introduction'],
+            view_count: 150,
+            is_featured: true
+          },
+          {
+            id: '2',
+            title: 'Product Demo Example',
+            description: 'Watch this product demonstration in action',
+            video_url: 'https://example.com/product-demo.mp4',
+            category: 'example',
+            tags: ['product', 'demo', 'example'],
+            view_count: 89,
+            is_featured: false
+          }
+        ];
+        setVideos(sampleVideos);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
-      toast.error('Failed to load templates and videos');
+      console.error('Error loading templates:', error);
+      toast.error('Failed to load templates');
     } finally {
       setLoading(false);
     }
@@ -131,16 +190,7 @@ export const VideoTemplateGallery = ({
   };
 
   const handleVideoSelect = async (video: PublicVideo) => {
-    // Increment view count
-    try {
-      await supabase
-        .from('public_videos')
-        .update({ view_count: video.view_count + 1 })
-        .eq('id', video.id);
-    } catch (error) {
-      console.error('Error updating view count:', error);
-    }
-
+    // Note: View count increment will be implemented when database is ready
     if (onVideoSelect) {
       onVideoSelect(video);
       toast.success(`Video "${video.title}" selected!`);
