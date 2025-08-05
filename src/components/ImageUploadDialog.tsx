@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, Image as ImageIcon, Loader2 } from "lucide-react";
-import { didApi } from "@/lib/d-id-api";
-import { tokenTracker } from "@/lib/token-tracking";
+import { useAvatarUpload } from "@/hooks/useAvatarUpload";
 import { useToast } from "@/hooks/use-toast";
 
 interface ImageUploadDialogProps {
@@ -16,11 +15,11 @@ interface ImageUploadDialogProps {
 
 export default function ImageUploadDialog({ children, onUploadComplete }: ImageUploadDialogProps) {
   const [open, setOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [avatarName, setAvatarName] = useState("");
   const [description, setDescription] = useState("");
+  const { uploadAvatar, uploading } = useAvatarUpload();
   const { toast } = useToast();
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,22 +32,12 @@ export default function ImageUploadDialog({ children, onUploadComplete }: ImageU
   }, []);
 
   const handleUpload = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile || !avatarName.trim()) return;
 
-    try {
-      setUploading(true);
-      
-      // Track token usage for image upload
-      tokenTracker.recordUsage("current-user", 100, "avatar_image_upload");
-      
-      const result = await didApi.uploadImage(selectedFile);
-      
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully!",
-      });
-
-      onUploadComplete?.(result.url);
+    const imageUrl = await uploadAvatar(selectedFile, avatarName);
+    
+    if (imageUrl) {
+      onUploadComplete?.(imageUrl);
       setOpen(false);
       
       // Reset form
@@ -56,16 +45,6 @@ export default function ImageUploadDialog({ children, onUploadComplete }: ImageU
       setPreviewUrl("");
       setAvatarName("");
       setDescription("");
-      
-    } catch (error) {
-      console.error("Upload error:", error);
-      toast({
-        title: "Upload Failed",
-        description: "Failed to upload image. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -138,10 +117,10 @@ export default function ImageUploadDialog({ children, onUploadComplete }: ImageU
             />
           </div>
 
-          {/* Cost Info */}
+          {/* Info */}
           <div className="bg-muted/50 rounded-lg p-3">
             <p className="text-sm text-muted-foreground">
-              <strong>Cost:</strong> €0.10 (100 tokens) per upload
+              Upload your photo to create a custom avatar. This will be saved to your profile and can be used for generating agents.
             </p>
           </div>
         </div>
@@ -152,7 +131,7 @@ export default function ImageUploadDialog({ children, onUploadComplete }: ImageU
           </Button>
           <Button 
             onClick={handleUpload} 
-            disabled={!selectedFile || uploading}
+            disabled={!selectedFile || !avatarName.trim() || uploading}
             className="gap-2"
           >
             {uploading && <Loader2 className="w-4 h-4 animate-spin" />}

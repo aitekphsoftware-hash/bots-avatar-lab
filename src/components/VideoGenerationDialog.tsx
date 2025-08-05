@@ -5,10 +5,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Video, Loader2, Play } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Video, Loader2, Play, User } from "lucide-react";
 import { didApi, Avatar, VideoRequest } from "@/lib/d-id-api";
 import { tokenTracker } from "@/lib/token-tracking";
 import { useToast } from "@/hooks/use-toast";
+import UserAvatarSelector from "./UserAvatarSelector";
 
 interface VideoGenerationDialogProps {
   children: React.ReactNode;
@@ -23,6 +25,8 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
   const [voiceId, setVoiceId] = useState("en-US-JennyNeural");
   const [subtitles, setSubtitles] = useState(true);
   const [fluent, setFluent] = useState(true);
+  const [useUserAvatar, setUseUserAvatar] = useState(false);
+  const [selectedUserAvatarUrl, setSelectedUserAvatarUrl] = useState<string>("");
   const { toast } = useToast();
 
   const microsoftVoices = [
@@ -42,7 +46,10 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
   ];
 
   const handleGenerate = async () => {
-    if (!selectedAvatar || !script.trim()) {
+    // Determine which avatar to use
+    const avatarUrl = useUserAvatar ? selectedUserAvatarUrl : selectedAvatar?.image_url;
+    
+    if (!avatarUrl || !script.trim()) {
       toast({
         title: "Missing Information",
         description: "Please select an avatar and enter a script.",
@@ -72,7 +79,7 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
           pad_audio: 0.1,
           stitch: true,
         },
-        source_url: selectedAvatar.image_url,
+        source_url: avatarUrl,
       };
 
       const result = await didApi.createTalk(request);
@@ -106,7 +113,7 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Video className="w-5 h-5" />
@@ -118,22 +125,45 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
         </DialogHeader>
         
         <div className="space-y-4">
-          {/* Selected Avatar Preview */}
-          {selectedAvatar && (
-            <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-              <img 
-                src={selectedAvatar.image_url} 
-                alt={selectedAvatar.name}
-                className="w-12 h-12 rounded-lg object-cover"
+          {/* Avatar Selection */}
+          <Tabs defaultValue="preset" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="preset" onClick={() => setUseUserAvatar(false)}>
+                Preset Avatars
+              </TabsTrigger>
+              <TabsTrigger value="custom" onClick={() => setUseUserAvatar(true)}>
+                <User className="w-4 h-4 mr-2" />
+                Your Avatars
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="preset" className="space-y-4">
+              {/* Selected Preset Avatar Preview */}
+              {selectedAvatar && !useUserAvatar && (
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                  <img 
+                    src={selectedAvatar.image_url} 
+                    alt={selectedAvatar.name}
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                  <div>
+                    <p className="font-medium">{selectedAvatar.name}</p>
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {selectedAvatar.gender} • {selectedAvatar.style}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="custom" className="space-y-4">
+              <UserAvatarSelector 
+                onAvatarSelect={setSelectedUserAvatarUrl}
+                selectedAvatarUrl={selectedUserAvatarUrl}
+                showUploadButton={true}
               />
-              <div>
-                <p className="font-medium">{selectedAvatar.name}</p>
-                <p className="text-sm text-muted-foreground capitalize">
-                  {selectedAvatar.gender} • {selectedAvatar.style}
-                </p>
-              </div>
-            </div>
-          )}
+            </TabsContent>
+          </Tabs>
 
           {/* Script Input */}
           <div className="space-y-2">
@@ -218,7 +248,7 @@ export default function VideoGenerationDialog({ children, selectedAvatar }: Vide
           </Button>
           <Button 
             onClick={handleGenerate} 
-            disabled={!selectedAvatar || !script.trim() || generating}
+            disabled={(!selectedAvatar && !useUserAvatar) || (useUserAvatar && !selectedUserAvatarUrl) || !script.trim() || generating}
             className="gap-2"
           >
             {generating ? (
