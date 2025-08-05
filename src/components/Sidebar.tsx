@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import { 
   Home, 
   Users, 
@@ -8,7 +9,8 @@ import {
   MessageCircle, 
   Languages, 
   MoreHorizontal,
-  Plus
+  Plus,
+  LogOut
 } from "lucide-react";
 import botsrherelogo from "@/assets/botsrhere-logo.png";
 
@@ -18,7 +20,13 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
 
   const navigationItems = [
     { icon: Home, label: "Home", path: "/" },
@@ -65,7 +73,16 @@ export default function Sidebar({ className }: SidebarProps) {
 
 
       {/* Bottom Section */}
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-4 border-t border-sidebar-border space-y-2">
+        <Button 
+          onClick={handleSignOut}
+          variant="outline"
+          size="sm"
+          className="w-full justify-start gap-3"
+        >
+          <LogOut className="w-4 h-4" />
+          {!isCollapsed && <span>Sign Out</span>}
+        </Button>
         <Button variant="ghost" className="w-full justify-start gap-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" size="sm">
           <MoreHorizontal className="w-4 h-4" />
           {!isCollapsed && <span>Apps</span>}
