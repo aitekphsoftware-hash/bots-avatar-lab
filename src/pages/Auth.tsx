@@ -104,7 +104,7 @@ const Auth = () => {
         setError(error.message);
       }
     } else {
-      setSuccess("Account created successfully! Please check your email to verify your account.");
+      setSuccess("Account created successfully! You can now sign in.");
     }
   };
 
