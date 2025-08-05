@@ -1,12 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Sidebar from "@/components/Sidebar";
+import { Routes, Route } from "react-router-dom";
+import Avatars from "./Avatars";
+import VideoStudio from "./VideoStudio";
+import VideoTranslate from "./VideoTranslate";
+import Agents from "./Agents";
+import Home from "./Home";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex bg-background">
+      <Sidebar className="w-64 flex-shrink-0" />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/avatars" element={<Avatars />} />
+        <Route path="/video-studio" element={<VideoStudio />} />
+        <Route path="/video-translate" element={<VideoTranslate />} />
+        <Route path="/agents" element={<Agents />} />
+      </Routes>
     </div>
   );
 };
