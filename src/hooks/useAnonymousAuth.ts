@@ -42,6 +42,7 @@ export const useAnonymousAuth = () => {
               remainingTokens: sessionData.remaining_tokens
             });
             setIsAuthenticated(true);
+            setLoading(false);
             return true;
           }
         }
