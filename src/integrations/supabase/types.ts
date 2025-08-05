@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      anonymous_users: {
+        Row: {
+          created_at: string
+          device_fingerprint_id: string
+          id: string
+          remaining_tokens: number | null
+          session_id: string
+          total_tokens: number
+          updated_at: string
+          used_tokens: number
+        }
+        Insert: {
+          created_at?: string
+          device_fingerprint_id: string
+          id?: string
+          remaining_tokens?: number | null
+          session_id: string
+          total_tokens?: number
+          updated_at?: string
+          used_tokens?: number
+        }
+        Update: {
+          created_at?: string
+          device_fingerprint_id?: string
+          id?: string
+          remaining_tokens?: number | null
+          session_id?: string
+          total_tokens?: number
+          updated_at?: string
+          used_tokens?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "anonymous_users_device_fingerprint_id_fkey"
+            columns: ["device_fingerprint_id"]
+            isOneToOne: false
+            referencedRelation: "device_fingerprints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      device_fingerprints: {
+        Row: {
+          created_at: string
+          fingerprint_hash: string
+          id: string
+          is_blocked: boolean
+          language: string | null
+          platform: string | null
+          screen_resolution: string | null
+          timezone: string | null
+          total_accounts_created: number
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          fingerprint_hash: string
+          id?: string
+          is_blocked?: boolean
+          language?: string | null
+          platform?: string | null
+          screen_resolution?: string | null
+          timezone?: string | null
+          total_accounts_created?: number
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          fingerprint_hash?: string
+          id?: string
+          is_blocked?: boolean
+          language?: string | null
+          platform?: string | null
+          screen_resolution?: string | null
+          timezone?: string | null
+          total_accounts_created?: number
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -389,6 +472,17 @@ export type Database = {
           created_at: string
           updated_at: string
         }[]
+      }
+      get_or_create_device_fingerprint: {
+        Args: {
+          fingerprint_hash_param: string
+          user_agent_param?: string
+          screen_resolution_param?: string
+          timezone_param?: string
+          language_param?: string
+          platform_param?: string
+        }
+        Returns: string
       }
       get_user_remaining_tokens: {
         Args: { user_uuid: string }
